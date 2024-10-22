@@ -19,6 +19,9 @@ interface PickerItemProps {
   active?: boolean;
 }
 
+const audioUrl =
+  "https://gxiporbkm0ip3qac.public.blob.vercel-storage.com/pop-up-eRvfpNCvz3WKxC7o2bZQJxieoonNVF.mp3";
+
 const PickerItem = ({
   value,
   option,
@@ -65,7 +68,7 @@ const Picker = ({
   const wheelRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef<boolean>(false);
   const startPosition = useRef<number>(0);
-  // const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const scrollTop = useRef<number>(0);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [mute, setMute] = useState<boolean>(true);
@@ -167,13 +170,13 @@ const Picker = ({
     };
   }, [handleEnd, handleMove, handleStart, handleWheel]);
 
-  // useEffect(() => {
-  //   if (!mute && audioRef.current) {
-  //     audioRef.current.pause();
-  //     audioRef.current.currentTime = 0;
-  //     audioRef.current.play();
-  //   }
-  // }, [activeIndex, mute]);
+  useEffect(() => {
+    if (!mute && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+    }
+  }, [activeIndex, mute]);
 
   useEffect(() => {
     const wheel = wheelRef.current;
@@ -219,12 +222,12 @@ const Picker = ({
       style={{ height: `${containerHeight}px` }}
       className="w-48 relative bg-transparent overflow-hidden group rounded-lg grid grid-cols-3 items-center transform-gpu hide-scroll-bar"
     >
-      {/* <audio
+      <audio
         className="hidden"
         ref={audioRef}
-        src="/minimal-pop.mp3"
+        src={audioUrl}
         autoPlay={false}
-      ></audio> */}
+      ></audio>
       <div
         style={{ height: `${itemHeight}px` }}
         className="bg-black/10 w-full text-sm select-none  md:text-base font-bold absolute -z-10 rounded-md flex items-center justify-end px-2 text-white"
