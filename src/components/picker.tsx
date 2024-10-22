@@ -104,20 +104,23 @@ const Picker = ({
     isDragging.current = true;
   }, []);
 
-  const handleEnd = useCallback((e: MouseEvent | TouchEvent) => {
+  const handleEnd = useCallback(() => {
     isDragging.current = false;
   }, []);
 
-  const handleMove = useCallback((e: MouseEvent | TouchEvent) => {
-    e.preventDefault();
+  const handleMove = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      e.preventDefault();
 
-    if (!wheelRef.current || !isDragging.current) return;
-    const wheel = wheelRef.current;
+      if (!wheelRef.current || !isDragging.current) return;
+      const wheel = wheelRef.current;
 
-    const endPosition = "touches" in e ? e.touches[0].pageY : e.pageY;
-    const delta = (endPosition - startPosition.current) * velocity;
-    wheel.scrollTop = scrollTop.current - delta;
-  }, []);
+      const endPosition = "touches" in e ? e.touches[0].pageY : e.pageY;
+      const delta = (endPosition - startPosition.current) * velocity;
+      wheel.scrollTop = scrollTop.current - delta;
+    },
+    [velocity]
+  );
 
   const handleWheel = useCallback((e: WheelEvent) => {
     if (!wheelRef.current) return;
@@ -133,6 +136,7 @@ const Picker = ({
   useEffect(() => {
     const wheel = wheelRef.current;
     if (!wheel) return;
+    console.log("rerenders");
 
     // Mouse events
     wheel.addEventListener("mousedown", handleStart);
@@ -161,17 +165,20 @@ const Picker = ({
 
       wheel.removeEventListener("wheel", handleWheel);
     };
-  }, []);
+  }, [handleEnd, handleMove, handleStart, handleWheel]);
+
+  // useEffect(() => {
+  //   if (!mute && audioRef.current) {
+  //     audioRef.current.pause();
+  //     audioRef.current.currentTime = 0;
+  //     audioRef.current.play();
+  //   }
+  // }, [activeIndex, mute]);
 
   useEffect(() => {
-    if (!mute && audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
-      audioRef.current.play();
-    }
-  }, [activeIndex, mute]);
+    const wheel = wheelRef.current;
+    if (!wheel) return;
 
-  useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -190,38 +197,34 @@ const Picker = ({
       }
     );
 
-    if (wheelRef.current) {
-      const childrenArray = Array.from(wheelRef.current.children);
-      childrenArray.forEach((ref) => {
-        if (ref) {
-          observer.observe(ref);
-        }
-      });
-    }
+    const childrenArray = Array.from(wheel.children);
+    childrenArray.forEach((ref) => {
+      if (ref) {
+        observer.observe(ref);
+      }
+    });
 
     return () => {
-      if (wheelRef.current) {
-        const childrenArray = Array.from(wheelRef.current.children);
-        childrenArray.forEach((ref) => {
-          if (ref) {
-            observer.unobserve(ref);
-          }
-        });
-      }
+      const childrenArray = Array.from(wheel.children);
+      childrenArray.forEach((ref) => {
+        if (ref) {
+          observer.unobserve(ref);
+        }
+      });
     };
-  }, [flattenedChildren]);
+  }, [flattenedChildren, rootMargin]);
 
   return (
     <div
       style={{ height: `${containerHeight}px` }}
       className="w-48 relative bg-transparent overflow-hidden group rounded-lg grid grid-cols-3 items-center transform-gpu hide-scroll-bar"
     >
-      <audio
+      {/* <audio
         className="hidden"
         ref={audioRef}
         src="/minimal-pop.mp3"
         autoPlay={false}
-      ></audio>
+      ></audio> */}
       <div
         style={{ height: `${itemHeight}px` }}
         className="bg-black/10 w-full text-sm select-none  md:text-base font-bold absolute -z-10 rounded-md flex items-center justify-end px-2 text-white"

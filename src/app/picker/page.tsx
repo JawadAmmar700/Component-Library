@@ -1,15 +1,15 @@
 "use client";
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState } from "react";
 import { Frameworks, ProjectsList } from "@/lib/constants";
 import Picker from "@/components/picker";
 
-type Project = (typeof ProjectsList)[0];
+// type Project = (typeof ProjectsList)[0];
 
 export default function Page() {
   const [selectedFramework, setSelectedFramework] = useState<string | null>(
     null
   );
-  const [project, setProject] = useState<Project | null>();
+  // const [project, setProject] = useState<Project | null>();
 
   const filterProjectsByFramework = (framework: string | null) => {
     if (!framework) return [];
@@ -17,13 +17,14 @@ export default function Page() {
       (project) => project.ref.toLowerCase() === framework.toLowerCase()
     ).map((project) => project.name);
   };
-  const filterProjectsByName = (name: string | null) => {
-    if (!name) return setProject(null);
-    const project = ProjectsList.filter(
-      (project) => project.name.toLowerCase() === name.toLowerCase()
-    )[0];
-    setProject(project);
-  };
+
+  // const filterProjectsByName = (name: string | null) => {
+  //   if (!name) return setProject(null);
+  //   const project = ProjectsList.filter(
+  //     (project) => project.name.toLowerCase() === name.toLowerCase()
+  //   )[0];
+  //   setProject(project);
+  // };
 
   return (
     <main className="flex flex-col space-y-5 md:flex-row p-5 h-screen justify-start items-center space-x-5 w-full bg-slate-800">
@@ -42,7 +43,7 @@ export default function Page() {
         <Picker
           inView={4}
           label="Projects"
-          onChange={(value) => filterProjectsByName(value)}
+          onChange={(value) => console.log(value)}
           velocity={2}
           key={selectedFramework}
         >
