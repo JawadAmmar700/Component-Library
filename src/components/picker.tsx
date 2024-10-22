@@ -65,7 +65,7 @@ const Picker = ({
   const wheelRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef<boolean>(false);
   const startPosition = useRef<number>(0);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  // const audioRef = useRef<HTMLAudioElement | null>(null);
   const scrollTop = useRef<number>(0);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [mute, setMute] = useState<boolean>(true);
@@ -212,7 +212,7 @@ const Picker = ({
         }
       });
     };
-  }, [flattenedChildren, rootMargin]);
+  }, [flattenedChildren, rootMargin, onChange]);
 
   return (
     <div
