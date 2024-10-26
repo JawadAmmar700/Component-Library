@@ -1,58 +1,62 @@
 "use client";
-import React, { useState } from "react";
-import { Frameworks, ProjectsList } from "@/lib/constants";
-import Picker from "@/components/picker";
 
-// type Project = (typeof ProjectsList)[0];
+import React, { useState, useCallback } from "react";
+import { Frameworks, ProjectsList } from "@/lib/constants";
+import Picker from "@/components/picker-component/picker";
 
 export default function Page() {
   const [selectedFramework, setSelectedFramework] = useState<string | null>(
     null
   );
-  // const [project, setProject] = useState<Project | null>();
+  const [selectedProject, setSelectedProject] = useState<string | null>(null);
 
-  const filterProjectsByFramework = (framework: string | null) => {
-    if (!framework) return [];
+  const handleChange = useCallback((value: string | null) => {
+    setSelectedFramework(value);
+  }, []);
+  const handleChange2 = useCallback(
+    (value: string | null) => {
+      setSelectedProject(value);
+    },
+    [selectedFramework]
+  );
+
+  const projectsFilter = (name: string | null) => {
     return ProjectsList.filter(
-      (project) => project.ref.toLowerCase() === framework.toLowerCase()
+      (project) => project.ref.toLowerCase() === name?.toLowerCase()
     ).map((project) => project.name);
   };
-
-  // const filterProjectsByName = (name: string | null) => {
-  //   if (!name) return setProject(null);
-  //   const project = ProjectsList.filter(
-  //     (project) => project.name.toLowerCase() === name.toLowerCase()
-  //   )[0];
-  //   setProject(project);
-  // };
 
   return (
     <main className="flex flex-col space-y-5 md:flex-row p-5 h-screen justify-start items-center space-x-5 w-full bg-slate-800">
       <Picker
+        width={200}
         inView={3}
         label="Framework"
-        onChange={(value) => setSelectedFramework(value)}
+        sound="pop"
+        onChange={handleChange}
         velocity={2}
+        // defaultValue="React"
       >
-        <Picker.Item option="Select" value={null} active />
         {Frameworks.map((framework) => (
           <Picker.Item key={framework} option={framework} value={framework} />
         ))}
       </Picker>
       {selectedFramework && (
         <Picker
-          inView={4}
-          label="Projects"
-          onChange={(value) => console.log(value)}
+          width={250}
+          inView={5}
+          label="Project"
+          sound="click"
+          onChange={handleChange2}
           velocity={2}
-          key={selectedFramework}
         >
-          <Picker.Item option="Select" value={null} active />
-          {filterProjectsByFramework(selectedFramework).map((project) => (
-            <Picker.Item key={project} option={project} value={project} />
+          {projectsFilter(selectedFramework).map((framework) => (
+            <Picker.Item key={framework} option={framework} value={framework} />
           ))}
         </Picker>
       )}
+
+      {selectedProject && <div className="text-center">{selectedProject}</div>}
     </main>
   );
 }
