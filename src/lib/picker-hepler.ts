@@ -13,6 +13,9 @@ type UseSoundEffectProps = {
   mute: boolean;
 };
 
+import { ClassValue } from "clsx";
+import { cn } from "@/utils/cn";
+
 const audioUrl = {
   pop: "https://gxiporbkm0ip3qac.public.blob.vercel-storage.com/pop-up-eRvfpNCvz3WKxC7o2bZQJxieoonNVF.mp3",
   click:
@@ -28,7 +31,7 @@ const useScroll = ({ velocity }: UseScrollProps) => {
   const handleStart = useCallback((e: MouseEvent | TouchEvent) => {
     if (!wheelRef.current) return;
     const wheel = wheelRef.current;
-
+    wheel.style.cursor = "grabbing";
     const currentPosition = "touches" in e ? e.touches[0].pageY : e.pageY;
     startPosition.current = currentPosition;
     scrollTop.current = wheel.scrollTop;
@@ -36,6 +39,7 @@ const useScroll = ({ velocity }: UseScrollProps) => {
   }, []);
 
   const handleEnd = useCallback(() => {
+    wheelRef.current!.style.cursor = "grab";
     isDragging.current = false;
   }, []);
 
@@ -118,4 +122,37 @@ const useSoundEffects = ({
   return { play };
 };
 
-export { useScroll, useSoundEffects };
+const PickerclassNames: { [key: string]: string } = {
+  containerClass: "relative group rounded-lg transform-gpu hide-scroll-bar",
+  wheelClass:
+    "h-full overflow-scroll overflow-x-hidden hide-scroll-bar snap-y snap-mandatory cursor-grab",
+  labelClass:
+    "bg-black/10 text-sm absolute inset-0 select-none h-[30px] w-full md:text-base font-bold -z-10 rounded-md flex items-center justify-end px-2 text-white",
+  buttonClass:
+    "absolute w-4 h-4 opacity-0 z-50 rounded-full transition-all duration-300 ease-in-out group-hover:scale-100 group-hover:opacity-100",
+  pickerItemClass:
+    "focus:outline-none focus:ring-4 flex items-center font-semibold w-full h-[30px] rounded-md select-none snap-center transition-opacity duration-75 ease-in-out transform-gpu",
+};
+
+const classNameMerge = (key: string, className: ClassValue) => {
+  return cn(PickerclassNames[key], className);
+};
+
+const conditionalClass = (
+  key: string,
+  condition: boolean[],
+  trueClass: string[],
+  falseClass: string[]
+) => {
+  return condition
+    .map((c, i) => classNameMerge(key, c ? trueClass[i] : falseClass[i]))
+    .join(" ");
+};
+
+export {
+  useScroll,
+  useSoundEffects,
+  classNameMerge,
+  PickerclassNames,
+  conditionalClass,
+};

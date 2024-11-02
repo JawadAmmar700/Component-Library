@@ -2,17 +2,26 @@
 import React, { memo, useCallback, useMemo } from "react";
 import { Volume, VolumeX } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useScroll, useSoundEffects } from "@/lib/picker-hepler";
+import {
+  classNameMerge,
+  conditionalClass,
+  PickerclassNames,
+  useScroll,
+  useSoundEffects,
+} from "@/lib/picker-hepler";
+import { ClassValue } from "clsx";
 
 interface IOSPickerProps {
   inView: number;
   velocity: number;
   onChange: (value: string | null) => void;
-  label: string;
+  label?: string | null;
   width: number;
   sound?: "pop" | "click";
   children: React.ReactNode;
   defaultValue?: string | null;
+  className?: ClassValue;
+  labelClassName?: ClassValue;
 }
 
 interface PickerItemProps {
@@ -20,7 +29,10 @@ interface PickerItemProps {
   option: string;
   id?: number;
   activeIndex?: number;
+  label?: string | null;
+  className?: ClassValue;
 }
+
 type PickerType = typeof Picker & {
   Item: typeof PickerItem;
 };
@@ -31,10 +43,12 @@ const Picker = memo(
     inView,
     velocity,
     onChange,
-    label,
+    label = null,
     width,
     sound = "pop",
     defaultValue = null,
+    className,
+    labelClassName,
   }: IOSPickerProps) => {
     const { ref } = useScroll({ velocity });
     const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -42,7 +56,6 @@ const Picker = memo(
     useSoundEffects({ activeIndex, mute, sound, volume: 0.25 });
     const itemHeight = 30;
     const rootMargin = (inView - 1) * itemHeight;
-    const containerHeight = (inView + (inView - 1)) * itemHeight;
 
     const flattenedChildren = useMemo(() => {
       return React.Children.toArray(children).flatMap((child) =>
@@ -73,8 +86,9 @@ const Picker = memo(
     );
 
     useEffect(() => {
+      ref.current!.scrollTop = 0;
       const observer = new IntersectionObserver(handleIntersection, {
-        threshold: 1,
+        threshold: 0.9,
         root: ref.current,
         rootMargin: `-${rootMargin}px 0px -${rootMargin}px 0px`,
       });
@@ -116,52 +130,65 @@ const Picker = memo(
 
     return (
       <div
-        style={{ height: `${containerHeight}px`, width: `${width}px` }}
-        className="bg-transparent relative overflow-hidden group rounded-lg grid grid-cols-3 items-center transform-gpu hide-scroll-bar"
+        style={{
+          height: `${inView * itemHeight}px`,
+          width: `${width}px`,
+        }}
+        className={`${classNameMerge("containerClass", className)}`}
       >
-        <div
-          style={{ height: `${itemHeight}px` }}
-          className="bg-black/10 w-full text-sm select-none  md:text-base font-bold absolute -z-10 rounded-md flex items-center justify-end px-2 text-white"
+        <button
+          onClick={toggleMute}
+          className={`${conditionalClass(
+            "buttonClass",
+            [Boolean(label)],
+            ["right-0 -top-6"],
+            ["-left-5 -top-3"]
+          )} `}
         >
-          {label}
-          <button
-            onClick={toggleMute}
-            className="absolute right-0 -top-7 w-4 h-4 opacity-0 rounded-full transition-all duration-300 ease-in-out group-hover:scale-100 group-hover:opacity-100"
-          >
-            {mute ? (
-              <VolumeX
-                className={`w-4  ${
-                  mute ? "scale-100 animate-fadeIn" : "scale-75 animate-fadeOut"
-                } `}
-              />
-            ) : (
-              <Volume
-                className={`w-4  ${
-                  !mute
-                    ? "scale-100 animate-fadeIn"
-                    : "scale-75 animate-fadeOut"
-                } `}
-              />
-            )}
-          </button>
+          {mute ? (
+            <VolumeX
+              className={`w-4  ${
+                mute ? "scale-100 animate-fadeIn" : "scale-75 animate-fadeOut"
+              } `}
+            />
+          ) : (
+            <Volume
+              className={`w-4  ${
+                !mute ? "scale-100 animate-fadeIn" : "scale-75 animate-fadeOut"
+              } `}
+            />
+          )}
+        </button>
+        <div className={`${classNameMerge("labelClass", labelClassName)}`}>
+          {label && label}
         </div>
         <div
-          style={{
-            paddingTop: `${rootMargin}px`,
-            paddingBottom: `${rootMargin + itemHeight}px`,
-          }}
           ref={ref}
-          className="h-full col-span-2 text-white flex flex-col overflow-y-scroll overflow-x-hidden hide-scroll-bar snap-y snap-mandatory "
+          style={{
+            paddingTop: `${inView * itemHeight - 15}px`,
+            paddingBottom: `${inView * itemHeight - 15}px`,
+            transform: `translateY(${-(
+              (inView - 1) * itemHeight +
+              15 -
+              16
+            )}px)`,
+          }}
+          className={`${PickerclassNames["wheelClass"]}`}
         >
           <PickerItem
             option="Choose"
             value={null}
             activeIndex={activeIndex}
             id={0}
+            label={label}
           />
 
           {flattenedChildren.map((child, index) =>
-            React.cloneElement(child, { activeIndex, id: index + 1 })
+            React.cloneElement(child, {
+              activeIndex,
+              id: index + 1,
+              label,
+            })
           )}
         </div>
       </div>
@@ -180,17 +207,29 @@ const Picker = memo(
   }
 );
 
-const PickerItem = ({ value, option, id, activeIndex }: PickerItemProps) => {
+const PickerItem = ({
+  value,
+  option,
+  id,
+  activeIndex,
+  label,
+  className,
+}: PickerItemProps) => {
+  const conditionalClasses = conditionalClass(
+    "pickerItemClass",
+    [Boolean(activeIndex !== id), Boolean(label)],
+    ["opacity-40 text-xs", "px-2 justify-start"],
+    ["opacity-100 scale-100 text-sm", "justify-center"]
+  );
   return (
     <div
       key={`${option}-${id}`}
       data-index={id}
       data-value={value}
-      className={`${
-        activeIndex !== id
-          ? "opacity-40 scale-75 "
-          : "opacity-100 scale-100 text-sm "
-      } mt-2 px-2 text-start focus:outline-none  focus:ring-4 font-semibold select-none snap-center transition-opacity duration-75 ease-in-out transform-gpu`}
+      className={`${classNameMerge("pickerItemClass", [
+        conditionalClasses,
+        className,
+      ])}`}
     >
       {option}
     </div>
