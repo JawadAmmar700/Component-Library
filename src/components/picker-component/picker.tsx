@@ -58,7 +58,6 @@ const Picker = memo(
     const rootMargin = (inView - 1) * itemHeight;
 
     const flattenedChildren = useMemo(() => {
-      console.log(label, "flattened children");
       return React.Children.toArray(children).flatMap((child) =>
         React.isValidElement<PickerItemProps>(child) &&
         child.type === PickerItem
@@ -79,7 +78,7 @@ const Picker = memo(
             const index = parseInt(entry.target.getAttribute("data-index")!);
             const value = entry.target.getAttribute("data-value")!;
             setActiveIndex(index);
-            index != 0 && value != null && onChange(value);
+            onChange(value);
           }
         });
       },
