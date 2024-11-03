@@ -58,6 +58,7 @@ const Picker = memo(
     const rootMargin = (inView - 1) * itemHeight;
 
     const flattenedChildren = useMemo(() => {
+      console.log(label, "flattened children");
       return React.Children.toArray(children).flatMap((child) =>
         React.isValidElement<PickerItemProps>(child) &&
         child.type === PickerItem
@@ -78,7 +79,7 @@ const Picker = memo(
             const index = parseInt(entry.target.getAttribute("data-index")!);
             const value = entry.target.getAttribute("data-value")!;
             setActiveIndex(index);
-            onChange(value);
+            index != 0 && value != null && onChange(value);
           }
         });
       },
@@ -135,6 +136,7 @@ const Picker = memo(
           width: `${width}px`,
         }}
         className={`${classNameMerge("containerClass", className)}`}
+        // className="relative group rounded-lg bg-black transform-gpu hide-scroll-bar"
       >
         <button
           onClick={toggleMute}
@@ -144,6 +146,9 @@ const Picker = memo(
             ["right-0 -top-6"],
             ["-left-5 -top-3"]
           )} `}
+          // className={`${
+          //   label ? "right-0 -top-6" : "-left-5 -top-3"
+          // } absolute w-4 h-4 opacity-0 z-50 rounded-full transition-all duration-300 ease-in-out group-hover:scale-100 group-hover:opacity-100`}
         >
           {mute ? (
             <VolumeX
@@ -159,7 +164,10 @@ const Picker = memo(
             />
           )}
         </button>
-        <div className={`${classNameMerge("labelClass", labelClassName)}`}>
+        <div
+          className={`${classNameMerge("labelClass", labelClassName)}`}
+          // className="bg-black/10 text-sm absolute inset-0 select-none h-[30px] w-full md:text-base font-bold -z-10 rounded-md flex items-center justify-end px-2 text-white"
+        >
           {label && label}
         </div>
         <div
@@ -173,20 +181,13 @@ const Picker = memo(
               16
             )}px)`,
           }}
-          className={`${PickerclassNames["wheelClass"]}`}
+          className={`${PickerclassNames.wheelClass}`}
+          // className="h-full overflow-scroll overflow-x-hidden hide-scroll-bar snap-y snap-mandatory cursor-grab"
         >
-          <PickerItem
-            option="Choose"
-            value={null}
-            activeIndex={activeIndex}
-            id={0}
-            label={label}
-          />
-
           {flattenedChildren.map((child, index) =>
             React.cloneElement(child, {
               activeIndex,
-              id: index + 1,
+              id: index,
               label,
             })
           )}
@@ -202,7 +203,10 @@ const Picker = memo(
       prevProps.onChange === nextProps.onChange &&
       prevProps.defaultValue === nextProps.defaultValue &&
       prevProps.width === nextProps.width &&
-      prevProps.sound === nextProps.sound
+      prevProps.sound === nextProps.sound &&
+      prevProps.className === nextProps.className &&
+      prevProps.labelClassName === nextProps.labelClassName &&
+      prevProps.onChange === nextProps.onChange
     );
   }
 );
@@ -230,6 +234,13 @@ const PickerItem = ({
         conditionalClasses,
         className,
       ])}`}
+      // className={`${
+      //   activeIndex !== id
+      //     ? "opacity-40 text-xs"
+      //     : "opacity-100 scale-100 text-sm"
+      // } ${
+      //   label ? "px-2 justify-start" : "justify-center"
+      // }  focus:outline-none focus:ring-4 flex items-center font-semibold w-full h-[30px] rounded-md select-none snap-center transition-opacity duration-75 ease-in-out transform-gpu`}
     >
       {option}
     </div>

@@ -122,7 +122,7 @@ const useSoundEffects = ({
   return { play };
 };
 
-const PickerclassNames: { [key: string]: string } = {
+const PickerclassNames = {
   containerClass: "relative group rounded-lg transform-gpu hide-scroll-bar",
   wheelClass:
     "h-full overflow-scroll overflow-x-hidden hide-scroll-bar snap-y snap-mandatory cursor-grab",
@@ -134,12 +134,15 @@ const PickerclassNames: { [key: string]: string } = {
     "focus:outline-none focus:ring-4 flex items-center font-semibold w-full h-[30px] rounded-md select-none snap-center transition-opacity duration-75 ease-in-out transform-gpu",
 };
 
-const classNameMerge = (key: string, className: ClassValue) => {
+const classNameMerge = (
+  key: keyof typeof PickerclassNames,
+  className: ClassValue
+) => {
   return cn(PickerclassNames[key], className);
 };
 
 const conditionalClass = (
-  key: string,
+  key: keyof typeof PickerclassNames,
   condition: boolean[],
   trueClass: string[],
   falseClass: string[]
