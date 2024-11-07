@@ -1,4 +1,4 @@
-export const Frameworks = ["Next", "React", "Node"] as const;
+export const Frameworks = ["Next", "React", "Node"];
 
 export const ProjectsList = [
   {
