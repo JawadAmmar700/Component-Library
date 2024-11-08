@@ -2,9 +2,9 @@
 import React, { memo, useCallback } from "react";
 import { Volume, VolumeX } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useScroll, useSoundEffects } from "@/lib/picker-hepler";
+import { useScroll, useSoundEffects } from "@/lib/hooks/picker";
 import { ClassValue } from "clsx";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 interface IOSPickerProps {
   inView: number;
@@ -18,6 +18,7 @@ interface IOSPickerProps {
   labelClassName?: ClassValue;
   data: string[] | number[];
   firstItem?: string | number | boolean | null;
+  ItemclassName?: ClassValue;
 }
 
 interface PickerItemProps {
@@ -26,7 +27,7 @@ interface PickerItemProps {
   id?: number;
   activeIndex?: number;
   label?: string | null;
-  className?: ClassValue;
+  ItemclassName?: ClassValue;
 }
 
 const Picker = memo(
@@ -42,6 +43,7 @@ const Picker = memo(
     labelClassName,
     data,
     firstItem,
+    ItemclassName,
   }: IOSPickerProps) => {
     const { ref } = useScroll({ velocity });
     const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -134,11 +136,11 @@ const Picker = memo(
         </button>
         <div
           className={cn(
-            "bg-black/10 text-sm absolute inset-0 select-none h-[30px] w-full md:text-base font-bold -z-10 rounded-md flex items-center justify-end px-2 text-white",
+            "bg-black/10 text-sm absolute inset-0 select-none h-[30px] w-full  font-bold -z-10 rounded-md flex items-center justify-end  text-white",
             labelClassName
           )}
         >
-          {label && label}
+          {label && <div className="mr-2 mt-1">{label}</div>}
         </div>
         <div
           ref={ref}
@@ -161,6 +163,7 @@ const Picker = memo(
               activeIndex={activeIndex}
               id={-1}
               label={label}
+              ItemclassName={ItemclassName}
             />
           )}
           {data.map((option, index) => (
@@ -171,6 +174,7 @@ const Picker = memo(
               activeIndex={activeIndex}
               id={index + 1}
               label={label}
+              ItemclassName={ItemclassName}
             />
           ))}
         </div>
@@ -200,7 +204,7 @@ const PickerItem = ({
   id,
   activeIndex,
   label,
-  className,
+  ItemclassName,
 }: PickerItemProps) => {
   return (
     <div
@@ -215,7 +219,7 @@ const PickerItem = ({
         } 
         ${label ? "px-2 justify-start" : "justify-center"}
       focus:outline-none text-white focus:ring-4 flex items-center font-semibold w-full h-[30px] rounded-md select-none snap-center transition-opacity duration-75 ease-in-out transform-gpu`,
-        className
+        ItemclassName
       )}
     >
       {option}
