@@ -82,7 +82,7 @@ export default function Component() {
   }, [selectedYear, selectedMonth, selectedDay]);
 
   return (
-    <Card className="w-full max-w-md bg-black pt-5 pl-5 pr-5">
+    <Card className="w-full max-w-md bg-black pt-5 pl-2 pr-2 border-4">
       <CardContent>
         <div className="flex mt-[50px]">
           <Picker

@@ -12,25 +12,23 @@ interface Position {
 }
 
 const periods = ["AM", "PM"];
+
 export default function TimePicker() {
   const [selectedHour, setSelectedHour] = useState<number | null>(null);
   const [selectedMinute, setSelectedMinute] = useState<number | null>(null);
   const [selectedPeriod, setSelectedPeriod] = useState<"AM" | "PM" | null>(
     null
   );
-
-  const [SunsetSunRise, setSunsetSunRise] = useState<Position | null>(null);
+  const [sunsetSunrise, setSunsetSunrise] = useState<Position | null>(null);
 
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
-          // Get latitude and longitude from the position object
           const latitude = position.coords.latitude.toString();
           const longitude = position.coords.longitude.toString();
-
           const result = await getSunSetAndSunRise(latitude, longitude);
-          setSunsetSunRise(result);
+          setSunsetSunrise(result);
         },
         (error) => {
           console.log("Error getting location: " + error.message);
@@ -104,11 +102,10 @@ export default function TimePicker() {
     return `${hour}:${minute} ${period}`;
   }, [selectedHour, selectedMinute, selectedPeriod]);
 
-  // Function to check if the selected time is day or night
   const checkDayOrNight = useMemo(() => {
-    if (!SunsetSunRise) return;
-    const sunriseTime = timeToMinutes(SunsetSunRise.sunrise);
-    const sunsetTime = timeToMinutes(SunsetSunRise.sunset);
+    if (!sunsetSunrise) return;
+    const sunriseTime = timeToMinutes(sunsetSunrise.sunrise);
+    const sunsetTime = timeToMinutes(sunsetSunrise.sunset);
     const selectedTime = timeToMinutes(formattedTime);
 
     if (selectedTime >= sunriseTime && selectedTime <= sunsetTime) {
@@ -116,14 +113,10 @@ export default function TimePicker() {
     } else {
       return "night";
     }
-  }, [formattedTime, SunsetSunRise]);
+  }, [formattedTime, sunsetSunrise]);
 
   return (
-    <div
-      className={`${
-        checkDayOrNight == "day" ? "bg-white" : "bg-black"
-      } flex border-2 space-x-2 relative md:mt-0 rounded-lg pt-[70px] px-5 py-5`}
-    >
+    <div className="flex space-x-2 relative transition-all duration-300  md:mt-0 rounded-lg pt-[70px] px-5 py-5">
       <Picker
         width={75}
         inView={3}
@@ -131,17 +124,8 @@ export default function TimePicker() {
         onChange={handleHourChange}
         velocity={2}
         data={hours}
-        className="text-black"
-        labelClassName={`border-2 ${
-          checkDayOrNight === "day"
-            ? "text-black border-black"
-            : "text-white border-white "
-        }`}
         label="Hour"
         defaultValue={new Date().getHours() % 12}
-        ItemclassName={` ${
-          checkDayOrNight === "day" ? "text-black" : "text-white"
-        }`}
       />
 
       <Picker
@@ -151,16 +135,8 @@ export default function TimePicker() {
         data={minutes}
         onChange={handleMinuteChange}
         velocity={2}
-        labelClassName={`border-2 ${
-          checkDayOrNight === "day"
-            ? "text-black border-black"
-            : "text-white border-white "
-        }`}
         label="Minute"
         defaultValue={new Date().getMinutes() + 1}
-        ItemclassName={` ${
-          checkDayOrNight === "day" ? "text-black" : "text-white"
-        }`}
       />
 
       <Picker
@@ -171,29 +147,22 @@ export default function TimePicker() {
         data={periods}
         velocity={2}
         label="Period"
-        labelClassName={`border-2 ${
-          checkDayOrNight === "day"
-            ? "text-black border-black"
-            : "text-white border-white "
-        }`}
-        defaultValue={new Date().getHours() % 12 > 12 ? 1 : 2}
-        ItemclassName={` ${
-          checkDayOrNight === "day" ? "text-black" : "text-white"
-        }`}
+        defaultValue={new Date().getHours() >= 12 ? 2 : 1}
       />
       <div
-        className="text-xl font-bold text-white absolute right-5 bottom-2 flex space-x-2 items-center justify-center"
-        style={{
-          color: checkDayOrNight === "day" ? "black" : "white",
-        }}
+        className={`text-2xl font-bold absolute right-5 bottom-2 flex space-x-1 items-center justify-center transition-all duration-200 ease-in transform ${
+          checkDayOrNight === "day" ? "text-slate-100" : "text-gray-500"
+        }`}
         aria-live="polite"
       >
         {checkDayOrNight === "day" ? (
-          <Sun className="w-5" />
+          <Sun className="h-4 transition-all duration-200 ease-in transform" />
         ) : (
-          <Moon className="w-5" />
+          <Moon className="h-4 transition-all duration-200 ease-out transform" />
         )}
-        <div>{formattedTime}</div>
+        <div className="transition-all duration-200 ease-in">
+          {formattedTime}
+        </div>
       </div>
     </div>
   );
