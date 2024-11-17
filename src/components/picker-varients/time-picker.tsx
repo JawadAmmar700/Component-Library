@@ -125,6 +125,7 @@ export default function TimePicker() {
         velocity={2}
         data={hours}
         label="Hour"
+        labelClassName="bg-white/10"
         defaultValue={new Date().getHours() % 12}
       />
 
@@ -136,6 +137,7 @@ export default function TimePicker() {
         onChange={handleMinuteChange}
         velocity={2}
         label="Minute"
+        labelClassName="bg-white/10"
         defaultValue={new Date().getMinutes() + 1}
       />
 
@@ -147,6 +149,7 @@ export default function TimePicker() {
         data={periods}
         velocity={2}
         label="Period"
+        labelClassName="bg-white/10"
         defaultValue={new Date().getHours() >= 12 ? 2 : 1}
       />
       <div

@@ -910,4 +910,27 @@ const years = [
 const hours = Array.from({ length: 12 }, (_, i) => i + 1);
 const minutes = Array.from({ length: 60 }, (_, i) => i);
 
-export { ProjectsList, MONTHS, years, Frameworks, hours, minutes };
+const skills_Array = [
+  "HTML",
+  "CSS",
+  "JavaScript",
+  "React",
+  "Nodejs",
+  "Express",
+  "MongoDB",
+  "Nextjs",
+  "Tailwindcss",
+  "Prisma",
+  "GraphQL",
+  "Typescript",
+];
+
+export {
+  ProjectsList,
+  MONTHS,
+  years,
+  Frameworks,
+  hours,
+  minutes,
+  skills_Array,
+};

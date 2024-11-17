@@ -1,10 +1,11 @@
-import CustomPicker from "@/components/custom-picker";
-import TimePicker from "@/components/time-picker";
-import DatePicker from "@/components/date-picker";
+import React from "react";
+import CustomPicker from "./custom-picker";
+import TimePicker from "./time-picker";
+import DatePicker from "./date-picker";
 
-export default function Page() {
+const PickerVarients = () => {
   return (
-    <main className="h-screen w-full py-5  grid md:grid-cols-2 md:grid-row-2 grid-cols-1">
+    <main className="h-screen overflow-hidden  w-full py-5 grid md:grid-cols-2 md:grid-row-2 grid-cols-1">
       <div className="flex justify-center items-center md:border-r-2 border-b-2 border-white">
         <CustomPicker />
       </div>
@@ -16,4 +17,6 @@ export default function Page() {
       </div>
     </main>
   );
-}
+};
+
+export default PickerVarients;

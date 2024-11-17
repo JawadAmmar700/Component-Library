@@ -31,6 +31,22 @@ export default function Home() {
             <Component />
             Picker
           </Link>
+          <Link
+            className="rounded-full font-bold border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 bg-[#383838]/50 hover:bg-[#383838]/30 text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+            href="/type-writer"
+            rel="noopener noreferrer"
+          >
+            <Component />
+            Type Writer
+          </Link>
+          <Link
+            className="rounded-full font-bold border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 bg-[#383838]/50 hover:bg-[#383838]/30 text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
+            href="/drop-input"
+            rel="noopener noreferrer"
+          >
+            <Component />
+            Drop Input
+          </Link>
         </div>
       </main>
     </div>

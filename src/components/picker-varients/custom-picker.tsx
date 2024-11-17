@@ -36,7 +36,6 @@ const CustomPicker = () => {
         onChange={handleChange}
         velocity={2}
         labelClassName="bg-white/10"
-        // defaultValue={2}
         firstItem="Choose"
       />
 
