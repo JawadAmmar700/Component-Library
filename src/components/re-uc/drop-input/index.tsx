@@ -1,6 +1,5 @@
 "use client";
 
-import { skills_Array } from "@/lib/constants";
 import {
   BadgePlus,
   ChevronLeft,
@@ -15,12 +14,16 @@ import React, {
   useMemo,
   useCallback,
 } from "react";
-import { AnimatedButtonComponent } from "../animated-button";
-import TypeWriter from "./type-writer";
-import LongPressButton from "./long-press-button";
+import { AnimatedButtonComponent } from "./animated-button";
+import TypeWriter from "../type-writer";
+import LongPressButton from "../long-press-button";
 
 interface DropInputProps {
   theme: "Dark" | "Light";
+  inputLabel: string;
+  dataLabel: string;
+  data: string[];
+  onChange: (value: DropItemType[]) => void;
 }
 
 type DropItemType = {
@@ -34,17 +37,24 @@ type TouchItem = {
   oldYPosition: number;
 };
 
-export default function DropInput({ theme = "Dark" }: DropInputProps) {
+export default function DropInput({
+  theme = "Dark",
+  data,
+  dataLabel,
+  inputLabel,
+  onChange,
+}: DropInputProps) {
   const [inputOrDropZone, setInputOrDropZone] = useState<"Input" | "DropZone">(
     "DropZone"
   );
-  const [data, setData] = useState<string[]>(skills_Array);
+  const [list, setList] = useState<string[]>(data);
   const [inputValue, setInputValue] = useState<string>("");
   const [dropedItems, setDropedItems] = useState<DropItemType[]>([]);
   const [deletedItem, setDeletedItem] = useState<DropItemType | null>(null);
   const [isDraggingOver, setIsDraggingOver] = useState<boolean>(false);
   const dropZoneRef = useRef<HTMLDivElement>(null);
   const dropRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const draggedItemRef = useRef<DropItemType | null>(null);
   const timeOutRef = useRef<NodeJS.Timeout | null>(null);
   const touchItem = useRef<TouchItem | null>(null);
@@ -55,32 +65,25 @@ export default function DropInput({ theme = "Dark" }: DropInputProps) {
   const dropZoneWidth = inputOrDropZone === "DropZone" ? "85%" : "15%";
 
   const filteredData = useMemo(() => {
-    return data.filter((item) =>
+    return list.filter((item) =>
       item.toLowerCase().includes(inputValue.toLowerCase())
     );
-  }, [inputValue, data]);
+  }, [inputValue, list]);
 
   const handleScroll = useCallback(
-    (
-      direction: "left" | "right",
-      scrollAmount: number,
-      behavior: "smooth" | "instant"
-    ) => {
+    (counter: number, isHolding: boolean, direction: "left" | "right") => {
       if (dropZoneRef.current) {
         const { scrollLeft, scrollWidth, clientWidth } = dropZoneRef.current;
         if (direction === "left" && scrollLeft > 0) {
           dropZoneRef.current.scrollTo({
-            left: Math.max(0, scrollLeft - scrollAmount),
-            behavior,
+            left: Math.max(0, scrollLeft - counter),
+            behavior: isHolding ? "instant" : "smooth",
           });
         }
         if (direction === "right" && scrollLeft < scrollWidth - clientWidth) {
           dropZoneRef.current.scrollTo({
-            left: Math.min(
-              scrollWidth - clientWidth,
-              scrollLeft + scrollAmount
-            ),
-            behavior,
+            left: Math.min(scrollWidth - clientWidth, scrollLeft + counter),
+            behavior: isHolding ? "instant" : "smooth",
           });
         }
       }
@@ -105,7 +108,6 @@ export default function DropInput({ theme = "Dark" }: DropInputProps) {
         draggedItemRef.current = {
           text: filteredData[id],
         };
-        // Create a custom drag image
         const dragImage = document.createElement("div");
         dragImage.className = `flex-shrink-0 py-1 px-2 rounded shadow-md ${
           theme === "Dark"
@@ -149,27 +151,29 @@ export default function DropInput({ theme = "Dark" }: DropInputProps) {
   const handleDrop = useCallback(
     (gesture: "Touch" | "Mouse") => {
       if (draggedItemRef.current) {
-        setDropedItems([...dropedItems, draggedItemRef.current]);
-        setData((prevData) =>
+        const newDropedItems = [...dropedItems, draggedItemRef.current];
+        setDropedItems(newDropedItems);
+        setList((prevData) =>
           prevData.filter((item) => item !== draggedItemRef.current?.text)
         );
+        onChange(newDropedItems);
       }
-
       if (gesture == "Mouse") setIsDraggingOver(false);
     },
-    [dropedItems, data, draggedItemRef.current]
+    [dropedItems, list, draggedItemRef.current]
   );
 
   const handleItemDelete = (item: DropItemType) => {
     if (timeOutRef.current) {
       clearTimeout(timeOutRef.current);
     }
-    setDropedItems((prevList) => prevList.filter((i) => i !== item));
-    const newData = [...data, item.text];
+    const clonedItems = [...dropedItems];
+    const filteredItems = clonedItems.filter((i) => i !== item);
+    setDropedItems(filteredItems);
+    const newData = [...list, item.text];
     setDeletedItem(item);
-    setData(
-      newData.sort((a, b) => skills_Array.indexOf(a) - skills_Array.indexOf(b))
-    );
+    setList(newData.sort((a, b) => data.indexOf(a) - data.indexOf(b)));
+    onChange(filteredItems);
     timeOutRef.current = setTimeout(() => {
       setDeletedItem(null);
     }, 200);
@@ -270,7 +274,28 @@ export default function DropInput({ theme = "Dark" }: DropInputProps) {
       touchItem.current = null;
       isItemOverDropZone.current = false;
     }
-  }, [draggedItemRef.current, data, dropedItems]);
+  }, [draggedItemRef.current, list, dropedItems]);
+
+  // const handleListScroll = useCallback(
+  //   (counter: number, isHolding: boolean, direction: "top" | "bottom") => {
+  //     if (listRef.current) {
+  //       const { scrollTop, scrollHeight, clientHeight } = listRef.current;
+  //       if (direction === "top" && scrollTop > 0) {
+  //         listRef.current.scrollTo({
+  //           top: Math.max(0, scrollTop - counter),
+  //           behavior: isHolding ? "instant" : "smooth",
+  //         });
+  //       }
+  //       if (direction === "bottom" && scrollTop < scrollHeight - clientHeight) {
+  //         listRef.current.scrollTo({
+  //           top: Math.min(scrollHeight - clientHeight, scrollTop + counter),
+  //           behavior: isHolding ? "instant" : "smooth",
+  //         });
+  //       }
+  //     }
+  //   },
+  //   [listRef.current]
+  // );
 
   return (
     <div
@@ -278,7 +303,7 @@ export default function DropInput({ theme = "Dark" }: DropInputProps) {
       style={{
         backgroundColor: theme === "Dark" ? "#0f172a" : "#e2e8f0",
       }}
-      className="p-5 w-4/5 md:w-3/5 lg:w-2/5 rounded-lg bg-slate-200"
+      className="p-5 w-4/5 md:w-3/5 lg:w-2/5 rounded-lg"
     >
       <div className="flex flex-col items-start space-y-1">
         <div className="flex items-center justify-between w-full">
@@ -287,7 +312,7 @@ export default function DropInput({ theme = "Dark" }: DropInputProps) {
               theme === "Dark" ? "text-slate-100" : "text-black"
             } `}
           >
-            Drop Input
+            {inputLabel}
           </h1>
         </div>
         <div className="w-full flex rounded h-[40px] space-x-2">
@@ -319,7 +344,7 @@ export default function DropInput({ theme = "Dark" }: DropInputProps) {
                     ? "text-slate-400 "
                     : "text-slate-200 placeholder:text-slate-200"
                 }  h-full border-none focus:outline-none bg-transparent`}
-                placeholder="Filter Items"
+                placeholder={`Filter ${dataLabel}...`}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
               />
@@ -405,8 +430,9 @@ export default function DropInput({ theme = "Dark" }: DropInputProps) {
           <div className="flex items-center justify-end space-x-1 w-full relative top-1">
             <LongPressButton
               onPress={handleScroll}
-              direction="left"
+              onPressArgs={["left"]}
               timeOutDuration={200}
+              disabled={dropedItems.length === 0}
               className={`rounded p-1 ${
                 theme === "Dark"
                   ? "bg-white/20 hover:bg-white/30"
@@ -427,8 +453,9 @@ export default function DropInput({ theme = "Dark" }: DropInputProps) {
             )}
             <LongPressButton
               onPress={handleScroll}
-              direction="right"
+              onPressArgs={["right"]}
               timeOutDuration={200}
+              disabled={dropedItems.length === 0}
               className={`rounded p-1 ${
                 theme === "Dark"
                   ? "bg-white/20 hover:bg-white/30"
@@ -452,29 +479,66 @@ export default function DropInput({ theme = "Dark" }: DropInputProps) {
               theme === "Dark" ? "text-slate-100" : "text-black"
             } `}
           >
-            Skills
+            {dataLabel}
           </h1>
-          <div className="flex flex-wrap gap-2 touch-none">
-            {filteredData.map((data, index) => (
-              <div
-                key={index}
-                draggable={true}
-                className={` ${
-                  deletedItem?.text === data ? "animate-scale" : "animate-none"
-                }  flex-shrink-0 py-1 px-2 rounded shadow-md ${
-                  theme === "Dark"
-                    ? "bg-white/20 hover:bg-white/30"
-                    : "bg-white/20 hover:bg-black/10"
-                } select-none   flex items-center justify-center text-xs font-semibold whitespace-nowrap`}
-                onDragEnd={handleDragEnd}
-                onDragStart={(e) => handleDragStart(e, index, data)}
-                onTouchStart={(e) => handleTouchStart(e, index)}
-                onTouchEnd={handleTouchEnd}
-                onTouchMove={handleTouchMove}
-              >
-                {data}
+          <div className="flex space-x-1">
+            <div
+              ref={listRef}
+              className="flex flex-wrap gap-2 touch-none h-[90px] overflow-y-scroll drop-input-scrollbar"
+            >
+              {filteredData.map((item, index) => (
+                <div
+                  key={index}
+                  draggable={true}
+                  className={` ${
+                    deletedItem?.text === item
+                      ? "animate-scale"
+                      : "animate-none"
+                  }  flex-shrink-0 py-1 px-2 rounded shadow-md ${
+                    theme === "Dark"
+                      ? "bg-white/20 hover:bg-white/30"
+                      : "bg-white/20 hover:bg-black/10"
+                  } select-none   flex items-center justify-center text-xs font-semibold whitespace-nowrap`}
+                  onDragEnd={handleDragEnd}
+                  onDragStart={(e) => handleDragStart(e, index, item)}
+                  onTouchStart={(e) => handleTouchStart(e, index)}
+                  onTouchEnd={handleTouchEnd}
+                  onTouchMove={handleTouchMove}
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+            {/* <div className="h-[90px] flex items-end justify-center md:hidden">
+              <div>
+                <LongPressButton
+                  onPress={handleListScroll}
+                  onPressArgs={["top"]}
+                  timeOutDuration={200}
+                  disabled={!list}
+                  className={`rounded p-1 ${
+                    theme === "Dark"
+                      ? "bg-white/20 hover:bg-white/30"
+                      : "bg-black/20 hover:bg-black/30"
+                  }`}
+                >
+                  <ChevronUp size={20} className="text-white" />
+                </LongPressButton>
+                <LongPressButton
+                  onPress={handleListScroll}
+                  onPressArgs={["bottom"]}
+                  timeOutDuration={200}
+                  disabled={!list}
+                  className={`rounded p-1 ${
+                    theme === "Dark"
+                      ? "bg-white/20 hover:bg-white/30"
+                      : "bg-black/20 hover:bg-black/30"
+                  }`}
+                >
+                  <ChevronDown size={20} className="text-white" />
+                </LongPressButton>
               </div>
-            ))}
+            </div> */}
           </div>
         </div>
         {/* End of Drop Items */}

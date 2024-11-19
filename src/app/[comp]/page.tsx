@@ -1,6 +1,8 @@
-import DropInputShowcase from "@/components/drop-input-showcase";
-import PickerVarients from "@/components/picker-varients/picker-varients";
-import TypeWriterDemo from "@/components/type-writer-demo";
+import DropInputShowcase from "@/components/showcase/drop-input";
+import LongPressButtonShowcase from "@/components/showcase/long-press-buttom";
+import MobileDropShowcase from "@/components/showcase/mobile-drop";
+import PickerVarients from "@/components/showcase/picker-varients";
+import TypeWriterShowcase from "@/components/showcase/type-writer";
 import React, { Suspense } from "react";
 
 const routes = [
@@ -10,11 +12,19 @@ const routes = [
   },
   {
     path: "type-writer",
-    component: <TypeWriterDemo />,
+    component: <TypeWriterShowcase />,
   },
   {
     path: "drop-input",
     component: <DropInputShowcase />,
+  },
+  {
+    path: "long-press-button",
+    component: <LongPressButtonShowcase />,
+  },
+  {
+    path: "mobile-drop",
+    component: <MobileDropShowcase />,
   },
 ];
 

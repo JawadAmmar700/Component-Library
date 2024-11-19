@@ -1,30 +1,31 @@
 import React, { useRef } from "react";
 
-interface LongPressButtonProps {
-  onPress: (
-    direction: "left" | "right",
-    scrollAmount: number,
-    behavior: "smooth" | "instant"
-  ) => void;
+interface LongPressButtonProps<TArgs extends (string | number | boolean)[]> {
+  onPress: (counter: number, isHolding: boolean, ...args: TArgs) => void;
   className: string;
   children: React.ReactNode;
-  direction: "left" | "right";
   timeOutDuration: number;
+  onPressArgs: TArgs;
+  disabled?: boolean;
+  delay?: number;
 }
 
-const LongPressButton: React.FC<LongPressButtonProps> = ({
+const LongPressButton = <TArgs extends (string | number | boolean)[]>({
   onPress,
   className,
   children,
-  direction,
   timeOutDuration,
-}) => {
+  onPressArgs,
+  disabled,
+  delay = 10,
+}: LongPressButtonProps<TArgs>) => {
   const requestAnimationFrameRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
   const timeOut = useRef<NodeJS.Timeout | null>(null);
 
+  const counterRef = useRef<number>(0);
+
   const handleLongPressLogic = () => {
-    let currentScrollAmount = 0;
     const animation = () => {
       const now = performance.now();
 
@@ -34,9 +35,9 @@ const LongPressButton: React.FC<LongPressButtonProps> = ({
 
       const deltaTime = now - lastTimeRef.current;
 
-      if (deltaTime > 10) {
-        currentScrollAmount += 1;
-        onPress(direction, currentScrollAmount, "instant");
+      if (deltaTime > delay) {
+        counterRef.current += 1;
+        onPress(counterRef.current, true, ...onPressArgs);
         lastTimeRef.current = now;
       }
 
@@ -47,7 +48,6 @@ const LongPressButton: React.FC<LongPressButtonProps> = ({
   };
 
   const handleMouseDown = () => {
-    onPress(direction, 20, "smooth");
     timeOut.current = setTimeout(() => {
       handleLongPressLogic();
     }, timeOutDuration);
@@ -61,8 +61,12 @@ const LongPressButton: React.FC<LongPressButtonProps> = ({
     if (requestAnimationFrameRef.current !== null) {
       cancelAnimationFrame(requestAnimationFrameRef.current);
       requestAnimationFrameRef.current = null;
+      counterRef.current = 0;
+    } else {
+      onPress(20, false, ...onPressArgs);
     }
   };
+
   return (
     <button
       onMouseDown={handleMouseDown}
@@ -70,6 +74,7 @@ const LongPressButton: React.FC<LongPressButtonProps> = ({
       onTouchStart={handleMouseDown}
       onTouchEnd={handleMouseUp}
       className={className}
+      disabled={disabled}
     >
       {children}
     </button>
