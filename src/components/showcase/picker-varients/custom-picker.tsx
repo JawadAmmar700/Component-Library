@@ -26,8 +26,9 @@ const CustomPicker = () => {
         project.ref.toLowerCase() === selectedFramework?.toLowerCase()
     ).map((project) => project.name);
   }, [selectedFramework]);
+
   return (
-    <div className="flex space-x-2">
+    <div className="flex space-x-2 dark:bg-transparent bg-white ">
       <Picker
         width={65}
         inView={2}
@@ -35,7 +36,6 @@ const CustomPicker = () => {
         data={Frameworks}
         onChange={handleChange}
         velocity={2}
-        labelClassName="bg-white/10"
         firstItem="Choose"
       />
 
@@ -48,8 +48,8 @@ const CustomPicker = () => {
           data={filteredProjects}
           onChange={(value) => console.log(value)}
           velocity={2}
-          labelClassName="bg-white/10"
           firstItem="Choose"
+          mute={false}
         />
       )}
     </div>

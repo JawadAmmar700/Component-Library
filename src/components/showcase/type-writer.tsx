@@ -22,7 +22,7 @@ const TypewriterShowcase = () => {
         <h2 className="text-blue-400 mb-4 font-mono">Modern Code Editor</h2>
         <TypeWriter
           text="const greeting = 'Welcome to the future';"
-          loop={true}
+          loop={false}
           animationDuration={80}
           TextStyle="font-mono text-blue-400"
           cursorStyle="bg-blue-400"

@@ -9,20 +9,12 @@ type TouchItem = {
 };
 
 type useMobileDropProps = {
-  list: string[];
-  containerRef: React.MutableRefObject<HTMLDivElement | null>;
-  dropRef: React.MutableRefObject<HTMLDivElement | null>;
-  theme: "Dark" | "Light";
-  onChange: (list: string[]) => void;
+  draggableItems: string[];
 };
 
-const useMobileDrop = ({
-  list,
-  containerRef,
-  dropRef,
-  theme = "Dark",
-  onChange,
-}: useMobileDropProps) => {
+const useMobileDrop = ({ draggableItems: list }: useMobileDropProps) => {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const dropZoneRef = useRef<HTMLDivElement | null>(null);
   const [draggableItems, setDraggableItems] = useState<string[]>(list);
   const [droppedItems, setDroppedItems] = useState<string[]>([]);
 
@@ -30,6 +22,7 @@ const useMobileDrop = ({
 
   const draggedItemRef = useRef<string | null>(null);
   const isItemOverDropZone = useRef<boolean | null>(false);
+
   const handleTouchStart = (
     event: React.TouchEvent<HTMLDivElement>,
     id: number
@@ -42,14 +35,14 @@ const useMobileDrop = ({
       const clonedElement = originalElement.cloneNode(true) as HTMLDivElement;
       originalElement.style.opacity = "0.5";
 
-      clonedElement.className = `absolute left-[${touch.clientX}px]  top-[${
-        touch.clientY
-      }px] flex-shrink-0 py-1 px-2 rounded shadow-md ${
-        theme === "Dark" ? "bg-white/20 text-white " : "bg-white/20 text-black "
+      clonedElement.className = `flex-shrink-0 py-1 px-2 rounded shadow-md bg-white/20 dark:text-white text-black "
       } select-none flex items-center justify-center text-xs font-semibold whitespace-nowrap`;
+      clonedElement.style.position = "absolute";
+      clonedElement.style.left = `${touch.clientX}px`;
+      clonedElement.style.top = `${touch.clientY}px`;
       clonedElement.style.pointerEvents = "none";
 
-      document.body.appendChild(clonedElement);
+      containerRef.current?.appendChild(clonedElement);
 
       // Store the cloned element in touchItem
       touchItem.current = {
@@ -63,7 +56,6 @@ const useMobileDrop = ({
   };
 
   const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
-    event.preventDefault();
     const touch = event.touches[0];
 
     if (touchItem.current && containerRef.current) {
@@ -88,8 +80,8 @@ const useMobileDrop = ({
         element.style.top = `${touch.clientY}px`;
 
         // Handle drop zone check
-        if (dropRef.current) {
-          const dropRect = dropRef.current.getBoundingClientRect();
+        if (dropZoneRef.current) {
+          const dropRect = dropZoneRef.current.getBoundingClientRect();
           const dropX = touch.clientX - dropRect.left;
           const dropY = touch.clientY - dropRect.top;
 
@@ -131,7 +123,6 @@ const useMobileDrop = ({
       setDraggableItems((prevData) =>
         prevData.filter((item) => item !== draggedItemRef.current)
       );
-      onChange(newDropedItems);
     }
   };
 
@@ -143,7 +134,6 @@ const useMobileDrop = ({
     setDraggableItems(
       newData.sort((a, b) => list.indexOf(a) - list.indexOf(b))
     );
-    onChange(filteredItems);
   };
 
   return {
@@ -153,6 +143,8 @@ const useMobileDrop = ({
     handleDroppedItemDelete,
     draggableItems,
     droppedItems,
+    dropZoneRef,
+    containerRef,
   };
 };
 

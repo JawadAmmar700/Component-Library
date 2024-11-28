@@ -116,7 +116,9 @@ export default function TimePicker() {
   }, [formattedTime, sunsetSunrise]);
 
   return (
-    <div className="flex space-x-2 relative transition-all duration-300  md:mt-0 rounded-lg pt-[70px] px-5 py-5">
+    <div
+      className={`flex bg-slate-50 dark:bg-transparent shadow-lg space-x-2 relative transition-all duration-300 md:mt-0 rounded-lg pt-[70px] px-5 py-5`}
+    >
       <Picker
         width={75}
         inView={3}
@@ -125,7 +127,7 @@ export default function TimePicker() {
         velocity={2}
         data={hours}
         label="Hour"
-        labelClassName="bg-white/10"
+        labelClassName="text-gray-700 dark:text-slate-200"
         defaultValue={new Date().getHours() % 12}
       />
 
@@ -137,7 +139,7 @@ export default function TimePicker() {
         onChange={handleMinuteChange}
         velocity={2}
         label="Minute"
-        labelClassName="bg-white/10"
+        labelClassName="text-gray-700 dark:text-slate-200"
         defaultValue={new Date().getMinutes() + 1}
       />
 
@@ -149,19 +151,22 @@ export default function TimePicker() {
         data={periods}
         velocity={2}
         label="Period"
-        labelClassName="bg-white/10"
+        labelClassName="text-gray-700 dark:text-slate-200"
         defaultValue={new Date().getHours() >= 12 ? 2 : 1}
       />
+
       <div
-        className={`text-2xl font-bold absolute right-5 bottom-2 flex space-x-1 items-center justify-center transition-all duration-200 ease-in transform ${
-          checkDayOrNight === "day" ? "text-slate-100" : "text-gray-500"
+        className={`text-2xl font-bold absolute right-5 rounded px-2 bottom-2 flex space-x-1 items-center justify-center transition-all duration-200 ease-in transform ${
+          checkDayOrNight === "day"
+            ? "text-gray-500 dark:text-slate-100"
+            : "text-black dark:text-gray-400"
         }`}
         aria-live="polite"
       >
         {checkDayOrNight === "day" ? (
-          <Sun className="h-4 transition-all duration-200 ease-in transform" />
+          <Sun className="h-5 w-5 mt-0.5 text-yellow-400 transition-all duration-200 ease-in transform" />
         ) : (
-          <Moon className="h-4 transition-all duration-200 ease-out transform" />
+          <Moon className="h-5 w-5 text-blue-300 mt-0.5 transition-all duration-200 ease-out transform" />
         )}
         <div className="transition-all duration-200 ease-in">
           {formattedTime}

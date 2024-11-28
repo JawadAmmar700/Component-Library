@@ -1,22 +1,8 @@
 "use client";
 import { useCallback, useEffect, useRef } from "react";
-import useSound from "use-sound";
 
 type UseScrollProps = {
   velocity: number;
-};
-
-type UseSoundEffectProps = {
-  sound?: "pop" | "click";
-  volume: number;
-  activeIndex: number;
-  mute: boolean;
-};
-
-export const audioUrl = {
-  pop: "https://gxiporbkm0ip3qac.public.blob.vercel-storage.com/pop-up-eRvfpNCvz3WKxC7o2bZQJxieoonNVF.mp3",
-  click:
-    "https://gxiporbkm0ip3qac.public.blob.vercel-storage.com/448081__breviceps__tic-toc-click-LspqrDuh6Kp2Du87kRRtLd2UZlujCM.wav",
 };
 
 const useScroll = ({ velocity }: UseScrollProps) => {
@@ -101,22 +87,4 @@ const useScroll = ({ velocity }: UseScrollProps) => {
   return { ref: wheelRef };
 };
 
-const useSoundEffects = ({
-  activeIndex,
-  mute,
-  sound,
-  volume,
-}: UseSoundEffectProps) => {
-  const [play] = useSound(audioUrl[sound || "pop"], {
-    volume,
-  });
-
-  useEffect(() => {
-    if (!mute) {
-      play();
-    }
-  }, [activeIndex, mute, play]);
-  return { play };
-};
-
-export { useScroll, useSoundEffects };
+export { useScroll };

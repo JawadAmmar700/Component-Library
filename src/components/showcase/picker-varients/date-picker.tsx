@@ -82,9 +82,9 @@ export default function Component() {
   }, [selectedYear, selectedMonth, selectedDay]);
 
   return (
-    <Card className="max-w-md bg-black pt-5 border-4">
+    <Card className="max-w-md pt-5 dark:bg-black bg-slate-50 shadow-lg">
       <CardContent>
-        <div className="flex mt-[50px]">
+        <div className="flex mt-[50px] space-x-1 dark:space-x-0">
           <Picker
             width={150}
             inView={3}
@@ -92,7 +92,7 @@ export default function Component() {
             data={MONTHS}
             onChange={handleMonthChange}
             velocity={2}
-            labelClassName="rounded-none border-t-2 border-b-2 border-r-0 border-l-0 border-white"
+            labelClassName="rounded-none dark:bg-transparent border-t-2 border-b-2 border-r-0 border-l-0 border-white"
             label="Month"
             defaultValue={selectedMonth + 1}
           />
@@ -104,7 +104,7 @@ export default function Component() {
             onChange={handleYearChange}
             velocity={2}
             data={years}
-            labelClassName="rounded-none border-t-2 border-b-2 border-r-0 border-l-0 border-white"
+            labelClassName="rounded-none dark:bg-transparent border-t-2 border-b-2 border-r-0 border-l-0 border-white"
             label="Year"
             defaultValue={years.indexOf((selectedYear + 1).toString())}
           />
@@ -116,32 +116,35 @@ export default function Component() {
             onChange={handleDayChange}
             velocity={2}
             data={days}
-            labelClassName="rounded-none border-t-2 border-b-2 border-r-0 border-l-0 border-white"
+            labelClassName="rounded-none dark:bg-transparent border-t-2 border-b-2 border-r-0 border-l-0 border-white"
             label="Day"
             defaultValue={selectedDay}
           />
         </div>
 
         <div className="flex items-center justify-between mt-4">
-          <div className="text-lg font-semibold text-white" aria-live="polite">
+          <div
+            className="text-lg font-semibold dark:text-white text-black"
+            aria-live="polite"
+          >
             {formattedDate}
           </div>
           <div className="flex space-x-2">
             <Button
-              className="bg-white/10 hover:bg-white/15"
+              className="dark:bg-white/10 bg-white shadow-lg  hover:dark:bg-white/15 hover:bg-black/10"
               size="icon"
               onClick={decrementMonth}
               aria-label="Previous month"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-4 w-4 dark:text-white text-black " />
             </Button>
             <Button
-              className="bg-white/10 hover:bg-white/15"
+              className="dark:bg-white/10 bg-white shadow-lg  hover:dark:bg-white/15 hover:bg-black/10"
               size="icon"
               onClick={incrementMonth}
               aria-label="Next month"
             >
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-4 w-4 dark:text-white text-black " />
             </Button>
           </div>
         </div>

@@ -83,16 +83,28 @@ const TypeWriter = ({
 
   return (
     <div
-      className={cn(
-        "flex text-white text-2xl relative items-center",
-        TextStyle
-      )}
+      className={cn("flex text-white text-2xl relative items-start", TextStyle)}
     >
-      <p>{animatedText}</p>
-      <span
-        className={cn("w-2 h-6 bg-white animate-blink", cursorStyle)}
-        aria-label="cursor"
-      />
+      <span className="relative">
+        {animatedText.split("\n").map((line, index) => (
+          <React.Fragment key={index}>
+            {line}
+            {/* Add a <br /> after each line except the last */}
+            {index < animatedText.split("\n").length - 1 && <br />}
+          </React.Fragment>
+        ))}
+        {/* Blinking cursor follows the last line */}
+        {animatedText.length > 0 && (
+          <span
+            className={cn(
+              "w-[0.5em] h-[30px]  bg-white animate-blink inline-block absolute bottom-[0]",
+              cursorStyle
+            )}
+            aria-hidden="true"
+            style={{ marginLeft: "0.1em" }}
+          />
+        )}
+      </span>
     </div>
   );
 };
