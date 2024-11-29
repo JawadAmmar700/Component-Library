@@ -18,7 +18,7 @@ const DropInputShowcase = () => {
         data={programmingSkills}
         dataLabel="Skills"
         // default values here is treated as saved values can be from different sources like Database or Server or any other source.
-        defaultValues={["JavaScript", "Python", "PHP", "HTML"]}
+        defaultValues={["JavaScript", "Python"]}
         inputLabel="DropZone Input"
       />
       <DropInput

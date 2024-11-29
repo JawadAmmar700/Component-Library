@@ -1,20 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { Moon, Sun, Minus, Plus } from "lucide-react";
+import React, { useState } from "react";
+import { Minus, Plus } from "lucide-react";
 import LongPressButton from "../re-uc/long-press-button";
 
 export default function LongPressButtonShowcase() {
   const [count, setCount] = useState(0);
   const [isHolding, setIsHolding] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDarkMode]);
 
   const handlePress = (
     counter: number,
@@ -30,17 +21,7 @@ export default function LongPressButtonShowcase() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
-      <div className="absolute top-4 right-4">
-        <button
-          onClick={() => setIsDarkMode(!isDarkMode)}
-          className="p-2 flex items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 transition-colors duration-300"
-          aria-label={
-            isDarkMode ? "Switch to light mode" : "Switch to dark mode"
-          }
-        >
-          {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
-        </button>
-      </div>
+      <div className="absolute top-4 right-4"></div>
       <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg transition-all duration-300 transform hover:scale-105">
         <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white text-center">
           Long Press Counter

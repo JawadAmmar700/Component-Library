@@ -10,8 +10,6 @@ const config: Config = {
   theme: {
     extend: {
       backgroundImage: {
-        batthern:
-          'url("https://www.transparenttextures.com/patterns/batthern.png")',
         "drop-input-gradient":
           "linear-gradient(90deg, silver, gray, silver, gray)",
       },
