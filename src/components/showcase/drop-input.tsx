@@ -14,19 +14,22 @@ const DropInputShowcase = () => {
     <main className="w-full py-5 flex flex-col space-y-5 lg:space-y-0 lg:flex-row lg:space-x-5 items-center justify-evenly lg:justify-center overflow-hidden">
       <DropInput
         onChange={handleSkillsChange}
+        options={programmingSkills}
+        defaultSelected={["JavaScript", "Python"]}
         theme="Light"
-        data={programmingSkills}
-        dataLabel="Skills"
-        // default values here is treated as saved values can be from different sources like Database or Server or any other source.
-        defaultValues={["JavaScript", "Python"]}
-        inputLabel="DropZone Input"
+        label="Select Your Skills"
+        optionsLabel="Skills"
+        className="w-4/5 md:w-3/5 lg:w-2/5"
+        optionsClassName="h-[90px]"
       />
       <DropInput
         onChange={handleHobbiesChange}
+        options={hobbies}
         theme="Dark"
-        data={hobbies}
-        dataLabel="Skills"
-        inputLabel="DropZone Input"
+        label="Select Your Hobbies"
+        optionsLabel="Hobbies"
+        className="w-4/5 md:w-3/5 lg:w-2/5"
+        optionsClassName="h-[90px]"
       />
     </main>
   );

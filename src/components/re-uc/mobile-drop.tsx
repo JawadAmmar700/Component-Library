@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import useMobileDrop from "@/lib/hooks/mobile-drop";
 import { cn } from "@/utils/cn";
+import useNativeDrop from "@/lib/hooks/use-native-drop";
 
 type MobileDropProps = {
   list: string[];
@@ -19,8 +19,9 @@ const MobileDrop = ({ list, className }: MobileDropProps) => {
     handleTouchMove,
     handleTouchEnd,
     handleDroppedItemDelete,
-  } = useMobileDrop({
+  } = useNativeDrop({
     draggableItems: list,
+    defaultSelected: ["Item 1", "Item 2"],
   });
 
   return (
