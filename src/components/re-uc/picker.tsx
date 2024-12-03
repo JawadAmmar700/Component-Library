@@ -175,7 +175,18 @@ const Picker = memo(
     return (
       prevProps.onValueChange === nextProps.onValueChange &&
       prevProps.options === nextProps.options &&
-      prevProps.initialValue === nextProps.initialValue
+      prevProps.initialValue === nextProps.initialValue &&
+      prevProps.initialItemLabel === nextProps.initialItemLabel &&
+      prevProps.labelText === nextProps.labelText &&
+      prevProps.componentWidth === nextProps.componentWidth &&
+      prevProps.soundEffect === nextProps.soundEffect &&
+      prevProps.isMuted === nextProps.isMuted &&
+      prevProps.visibleItems === nextProps.visibleItems &&
+      prevProps.scrollVelocity === nextProps.scrollVelocity &&
+      prevProps.ObserverClassName === nextProps.ObserverClassName &&
+      prevProps.itemClassName === nextProps.itemClassName &&
+      prevProps.containerClassName === nextProps.containerClassName &&
+      prevProps.labelClassName === nextProps.labelClassName
     );
   }
 );

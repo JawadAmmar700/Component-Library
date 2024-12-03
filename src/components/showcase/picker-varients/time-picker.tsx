@@ -154,7 +154,7 @@ export default function TimePicker({ theme, className }: TimePickerProps) {
           scrollVelocity={2}
           options={hours}
           labelText="Hour"
-          labelClassName={`  ${
+          ObserverClassName={`  ${
             theme === "dark"
               ? "text-slate-200 border-white bg-white/10"
               : "text-gray-700 border-none bg-white"
@@ -176,7 +176,7 @@ export default function TimePicker({ theme, className }: TimePickerProps) {
           }
           scrollVelocity={2}
           labelText="Minute"
-          labelClassName={`  ${
+          ObserverClassName={`  ${
             theme === "dark"
               ? "text-slate-200 border-white bg-white/10"
               : "text-gray-700 border-none bg-white"
@@ -198,7 +198,7 @@ export default function TimePicker({ theme, className }: TimePickerProps) {
           options={periods}
           scrollVelocity={2}
           labelText="Period"
-          labelClassName={`  ${
+          ObserverClassName={`  ${
             theme === "dark"
               ? "text-slate-200 border-white bg-white/10"
               : "text-gray-700 border-none bg-white"

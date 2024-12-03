@@ -106,14 +106,14 @@ const DatePicker = ({ theme }: DatePickerProps) => {
             options={MONTHS}
             onValueChange={handleMonthChange}
             scrollVelocity={2}
-            labelClassName={`${
+            ObserverClassName={`${
               theme === "dark"
                 ? "text-white border-white bg-transparent rounded-none"
                 : "text-black border-none bg-white rounded"
             }   border-t-2 border-b-2 border-r-0 border-l-0 `}
             labelText="Month"
             initialValue={selectedMonth + 1}
-            itemClassName={`${theme === "dark" ? "text-white" : "text-black"}`}
+            itemClassName={`${theme === "light" && "text-black"}`}
           />
 
           <Picker
@@ -125,12 +125,12 @@ const DatePicker = ({ theme }: DatePickerProps) => {
             options={years}
             labelText="Year"
             initialValue={years.indexOf((selectedYear + 1).toString())}
-            labelClassName={`${
+            ObserverClassName={`${
               theme === "dark"
                 ? "text-white border-white bg-transparent rounded-none "
                 : "text-black border-none bg-white rounded"
             }  border-t-2 border-b-2 border-r-0 border-l-0 `}
-            itemClassName={`${theme === "dark" ? "text-white" : "text-black"}`}
+            itemClassName={`${theme === "light" && "text-black"}`}
           />
 
           <Picker
@@ -141,13 +141,13 @@ const DatePicker = ({ theme }: DatePickerProps) => {
             scrollVelocity={2}
             options={days}
             labelText="Day"
-            labelClassName={`${
+            ObserverClassName={`${
               theme === "dark"
                 ? "text-white border-white bg-transparent rounded-none "
                 : "text-black border-none bg-white rounded"
             }   border-t-2 border-b-2 border-r-0 border-l-0 `}
             initialValue={selectedDay}
-            itemClassName={`${theme === "dark" ? "text-white" : "text-black"}`}
+            itemClassName={`${theme === "light" && "text-black"}`}
           />
         </div>
 
