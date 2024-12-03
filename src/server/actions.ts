@@ -13,7 +13,11 @@ export const getSunSetAndSunRise = async (lat: string, lng: string) => {
   const fetchUrl = `${url}?${searchParams.toString()}`;
 
   // fetch data from API
-  const response = await fetch(fetchUrl);
+  const response = await fetch(fetchUrl, {
+    next: {
+      revalidate: 24 * 60 * 60, // revalidate every 24 hours
+    },
+  });
   const data = await response.json();
 
   // remove seconds from time string

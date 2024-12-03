@@ -9,16 +9,13 @@ const CustomPicker = () => {
     null
   );
 
-  const handleChange = useCallback(
-    (value: string | number | boolean | null) => {
-      if (value) {
-        setSelectedFramework(value.toString());
-      } else {
-        setSelectedFramework(null);
-      }
-    },
-    []
-  );
+  const handleChange = (value: string | number | boolean | null) => {
+    if (value) {
+      setSelectedFramework(value.toString());
+    } else {
+      setSelectedFramework(null);
+    }
+  };
 
   const filteredProjects = useMemo(() => {
     return ProjectsList.filter(
@@ -30,26 +27,29 @@ const CustomPicker = () => {
   return (
     <div className="flex space-x-2 dark:bg-transparent bg-white ">
       <Picker
-        width={65}
-        inView={2}
-        sound="pop"
-        data={Frameworks}
-        onChange={handleChange}
-        velocity={2}
-        firstItem="Choose"
+        componentWidth={65}
+        visibleItems={2}
+        soundEffect="pop"
+        options={Frameworks}
+        onValueChange={handleChange}
+        scrollVelocity={2}
+        initialItemLabel="Choose"
+        itemClassName="text-black dark:text-white"
       />
 
       {selectedFramework && (
         <Picker
-          width={200}
-          inView={4}
-          label="Project"
-          sound="click"
-          data={filteredProjects}
-          onChange={(value) => console.log(value)}
-          velocity={2}
-          firstItem="Choose"
-          mute={false}
+          componentWidth={200}
+          visibleItems={4}
+          labelText="Project"
+          soundEffect="click"
+          options={filteredProjects}
+          onValueChange={(value) => console.log(value)}
+          scrollVelocity={2}
+          initialItemLabel="Choose"
+          isMuted={false}
+          labelClassName="text-black dark:text-white"
+          itemClassName="text-black dark:text-white"
         />
       )}
     </div>

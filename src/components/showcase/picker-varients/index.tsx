@@ -10,10 +10,10 @@ const PickerVarients = () => {
         <CustomPicker />
       </div>
       <div className="flex justify-center items-center md:border-l-2 md:border-b-2 border-black dark:border-white">
-        <TimePicker />
+        <TimePicker theme="light" />
       </div>
       <div className="md:col-span-2 flex px-5 md:px-0 justify-center items-center border-t-2  border-black dark:border-white">
-        <DatePicker />
+        <DatePicker theme="light" />
       </div>
     </main>
   );
