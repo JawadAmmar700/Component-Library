@@ -32,8 +32,9 @@ interface PickerItemProps {
 }
 
 const audioUrl = {
-  pop: "/audio/pop.mp3",
-  click: "/audio/click.wav",
+  pop: "https://gxiporbkm0ip3qac.public.blob.vercel-storage.com/pop-up-eRvfpNCvz3WKxC7o2bZQJxieoonNVF.mp3",
+  click:
+    "https://gxiporbkm0ip3qac.public.blob.vercel-storage.com/448081__breviceps__tic-toc-click-LspqrDuh6Kp2Du87kRRtLd2UZlujCM.wav",
 };
 
 const Picker = memo(

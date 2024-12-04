@@ -160,7 +160,9 @@ export default function TimePicker({ theme, className }: TimePickerProps) {
               : "text-gray-700 border-none bg-white"
           }`}
           itemClassName={`${theme === "dark" ? "text-white" : "text-black"}`}
-          initialValue={new Date().getHours() % 12}
+          initialValue={
+            new Date().getHours() == 12 ? 12 : new Date().getHours() % 12
+          }
         />
 
         <Picker
