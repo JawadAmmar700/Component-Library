@@ -36,7 +36,7 @@ const TypewriterShowcase = () => {
           text="Crafting Digital Experiences"
           loop={false}
           animationDuration={120}
-          TextStyle="font-serif text-3xl font-light text-black"
+          TextStyle="font-serif text-3xl font-light text-black dark:text-white"
           cursorStyle="h-8 bg-primary"
         />
       </Card>
@@ -60,7 +60,7 @@ const TypewriterShowcase = () => {
           text="Less is more."
           loop={false}
           animationDuration={150}
-          TextStyle="font-sans text-xl tracking-wide text-black"
+          TextStyle="font-sans text-xl tracking-wide text-black dark:text-white"
           cursorStyle="w-1 h-5"
         />
       </Card>

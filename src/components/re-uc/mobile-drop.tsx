@@ -7,9 +7,10 @@ import useNativeDrop from "@/lib/hooks/use-native-drop";
 type MobileDropProps = {
   list: string[];
   className?: string;
+  defaultSelected?: string[];
 };
 
-const MobileDrop = ({ list, className }: MobileDropProps) => {
+const MobileDrop = ({ list, className, defaultSelected }: MobileDropProps) => {
   const {
     containerRef,
     dropZoneRef,
@@ -21,7 +22,7 @@ const MobileDrop = ({ list, className }: MobileDropProps) => {
     handleDroppedItemDelete,
   } = useNativeDrop({
     draggableItems: list,
-    defaultSelected: ["Item 1", "Item 2"],
+    defaultSelected,
   });
 
   return (

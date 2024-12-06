@@ -20,7 +20,7 @@ const DropInputShowcase = () => {
         label="Select Your Skills"
         optionsLabel="Skills"
         className="w-4/5 md:w-3/5 lg:w-2/5"
-        optionsClassName="h-[90px]"
+        optionsClassName="max-h-[90px]"
       />
       <DropInput
         onChange={handleHobbiesChange}
@@ -29,7 +29,7 @@ const DropInputShowcase = () => {
         label="Select Your Hobbies"
         optionsLabel="Hobbies"
         className="w-4/5 md:w-3/5 lg:w-2/5"
-        optionsClassName="h-[90px]"
+        optionsClassName="max-h-[90px]"
       />
     </main>
   );

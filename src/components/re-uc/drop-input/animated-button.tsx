@@ -1,3 +1,4 @@
+"use client";
 import { Trash } from "lucide-react";
 
 interface AnimatedButtonProps {
