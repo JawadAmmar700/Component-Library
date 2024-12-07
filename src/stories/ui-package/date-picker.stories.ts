@@ -1,4 +1,4 @@
-import DatePicker from "@/components/showcase/picker-varients/date-picker";
+import DatePicker from "@/components/library/date-picker";
 import type { Meta, StoryObj } from "@storybook/react";
 
 //👇 This default export determines where your story goes in the story list

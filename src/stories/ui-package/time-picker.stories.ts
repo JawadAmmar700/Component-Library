@@ -1,4 +1,4 @@
-import TimePicker from "@/components/showcase/picker-varients/time-picker";
+import TimePicker from "@/components/library/time-picker";
 import type { Meta, StoryObj } from "@storybook/react";
 
 //👇 This default export determines where your story goes in the story list
