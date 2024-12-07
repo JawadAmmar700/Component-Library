@@ -1,4 +1,4 @@
-import DropInput from "@/components/re-uc/drop-input";
+import DropInput from "@/components/library/drop-input";
 import type { Meta, StoryObj } from "@storybook/react";
 
 //👇 This default export determines where your story goes in the story list

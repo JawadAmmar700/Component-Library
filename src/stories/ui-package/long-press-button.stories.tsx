@@ -1,4 +1,4 @@
-import LongPressButton from "@/components/re-uc/long-press-button";
+import LongPressButton from "@/components/library/long-press-button";
 import type { Meta, StoryObj } from "@storybook/react";
 import { MousePointerClick } from "lucide-react";
 

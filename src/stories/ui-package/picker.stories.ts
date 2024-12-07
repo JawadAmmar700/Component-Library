@@ -1,4 +1,4 @@
-import Picker from "@/components/re-uc/picker";
+import Picker from "@/components/library/picker";
 import type { Meta, StoryObj } from "@storybook/react";
 
 //👇 This default export determines where your story goes in the story list

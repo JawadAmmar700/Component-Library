@@ -1,5 +1,5 @@
 "use client";
-import { useScroll } from "@/lib/hooks/use-scroll";
+import { useScroll } from "@/components/library/hooks/use-scroll";
 import {
   ArrowRightIcon,
   MailIcon,

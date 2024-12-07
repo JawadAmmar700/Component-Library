@@ -1,6 +1,6 @@
 import DropInputShowcase from "@/components/showcase/drop-input";
 import LongPressButtonShowcase from "@/components/showcase/long-press-buttom";
-import MobileDropShowcase from "@/components/showcase/mobile-drop";
+import MobileDrop from "@/components/showcase/mobile-drop";
 import PickerVarients from "@/components/showcase/picker-varients";
 import TypeWriterShowcase from "@/components/showcase/type-writer";
 import React, { Suspense } from "react";
@@ -24,7 +24,7 @@ const routes = [
   },
   {
     path: "mobile-drop",
-    component: <MobileDropShowcase />,
+    component: <MobileDrop />,
   },
 ];
 

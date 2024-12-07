@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Minus, Plus } from "lucide-react";
-import LongPressButton from "../re-uc/long-press-button";
+import LongPressButton from "@/components/library/long-press-button";
 
 export default function LongPressButtonShowcase() {
   const [count, setCount] = useState(0);

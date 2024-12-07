@@ -1,6 +1,6 @@
 import React from "react";
 import { Card } from "@/components/ui/card";
-import TypeWriter from "../re-uc/type-writer";
+import TypeWriter from "@/components/library/type-writer";
 
 const TypewriterShowcase = () => {
   return (

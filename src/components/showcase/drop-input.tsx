@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import DropInput from "@/components/re-uc/drop-input";
+import DropInput from "@/components/library/drop-input";
 import { hobbies, programmingSkills } from "@/lib/constants";
 
 const DropInputShowcase = () => {

@@ -3,7 +3,7 @@ import React, { memo, useCallback } from "react";
 import { useEffect, useState } from "react";
 import { cn } from "@/utils/cn";
 import useSound from "use-sound";
-import { useScroll } from "@/lib/hooks/use-scroll";
+import { useScroll } from "@/components/library/hooks/use-scroll";
 
 interface PickerProps {
   // The number of items visible in the picker.

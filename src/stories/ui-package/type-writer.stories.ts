@@ -1,4 +1,4 @@
-import TypeWriter from "@/components/re-uc/type-writer";
+import TypeWriter from "@/components/library/type-writer";
 import type { Meta, StoryObj } from "@storybook/react";
 
 //👇 This default export determines where your story goes in the story list

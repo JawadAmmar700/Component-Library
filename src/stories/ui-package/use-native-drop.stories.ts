@@ -1,4 +1,4 @@
-import MobileDrop from "@/components/re-uc/mobile-drop";
+import MobileDrop from "@/components/showcase/mobile-drop";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta: Meta<typeof MobileDrop> = {

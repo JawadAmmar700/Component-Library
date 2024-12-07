@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback, useMemo } from "react";
 import { Frameworks, ProjectsList } from "@/lib/constants";
-import Picker from "@/components/re-uc/picker";
+import Picker from "@/components/library/picker";
 
 const CustomPicker = () => {
   const [selectedFramework, setSelectedFramework] = useState<string | null>(
