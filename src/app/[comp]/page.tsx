@@ -1,8 +1,10 @@
+import DockShowCase from "@/components/showcase/dock";
 import DropInputShowcase from "@/components/showcase/drop-input";
 import LongPressButtonShowcase from "@/components/showcase/long-press-buttom";
 import MobileDrop from "@/components/showcase/mobile-drop";
 import PickerVarients from "@/components/showcase/picker-varients";
 import TypeWriterShowcase from "@/components/showcase/type-writer";
+import UseScrollDemo from "@/components/showcase/use-scroll";
 import React, { Suspense } from "react";
 
 const routes = [
@@ -25,6 +27,14 @@ const routes = [
   {
     path: "mobile-drop",
     component: <MobileDrop />,
+  },
+  {
+    path: "use-scroll",
+    component: <UseScrollDemo />,
+  },
+  {
+    path: "dock",
+    component: <DockShowCase />,
   },
 ];
 

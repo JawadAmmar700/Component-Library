@@ -1,4 +1,4 @@
-"use Server";
+"use server";
 
 export const getSunSetAndSunRise = async (lat: string, lng: string) => {
   // TODO: Implement this function

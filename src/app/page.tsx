@@ -27,6 +27,14 @@ const components = [
     name: "Mobile Drop",
     href: "/mobile-drop",
   },
+  {
+    name: "useScroll",
+    href: "/use-scroll",
+  },
+  {
+    name: "Dock",
+    href: "/dock",
+  },
 ];
 
 interface SidebarProps {
@@ -84,7 +92,7 @@ export default function Page() {
                     <ModeToggle />
                   </div>
                 </div>
-                <ScrollArea className="h-[300px] mt-8">
+                <ScrollArea className="h-[500px] mt-8">
                   <div className="space-y-4">
                     <p className="font-mono text-sm">
                       Built with{" "}

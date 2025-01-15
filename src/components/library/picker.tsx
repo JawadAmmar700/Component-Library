@@ -9,7 +9,7 @@ interface PickerProps {
   // The number of items visible in the picker.
   visibleItems: number;
   // The velocity of scrolling, determined by predefined numeric values (0.5 to 3).
-  scrollVelocity: 0.5 | 1 | 1.5 | 2 | 2.5 | 3;
+  scrollVelocity?: 0.5 | 1 | 1.5 | 2 | 2.5 | 3;
   // Callback function triggered when the selected value changes, accepting various types.
   onValueChange: (value: string | number | boolean | null) => void;
   // Optional text label for the picker, can be null.
@@ -71,7 +71,7 @@ const Picker = memo(
     isMuted = true,
     visibleItems,
     ObserverClassName,
-    scrollVelocity,
+    scrollVelocity = 2,
   }: PickerProps) => {
     const { ref } = useScroll({ velocity: scrollVelocity });
     const [activeIndex, setActiveIndex] = useState<number>(0);
